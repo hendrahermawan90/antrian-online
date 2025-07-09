@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🧾 Manajemen Loket</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f7f9fc;
+            margin: 30px;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .tambah-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background-color: #2ecc71;
+            color: white;
+            border-radius: 6px;
+        }
+        .tambah-button:hover {
+            background-color: #27ae60;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        td form {
+            display: inline;
+        }
+        button {
+            padding: 6px 12px;
+            border: none;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c0392b;
+        }
+        .edit-link {
+            margin-right: 10px;
+            color: #f39c12;
+        }
+        .edit-link:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #3498db;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧾 Manajemen Loket</h1>
+    <a href="{{ url_for('admin_dashboard') }}" class="back-link">⬅️ Kembali ke Dashboard</a>
+    <h1></h1>
+    <a href="{{ url_for('tambah_loket') }}" class="tambah-button">➕ Tambah Loket Baru</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Kode</th>
+                <th>Kuota Harian</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for loket in loket_list %}
+            <tr>
+                <td>{{ loket.id }}</td>
+                <td>{{ loket.nama }}</td>
+                <td>{{ loket.kode }}</td>
+                <td>{{ loket.kuota_harian }}</td>
+                <td>
+                    <a href="{{ url_for('edit_loket', id=loket.id) }}" class="edit-link">✏️ Edit</a>
+                    <form method="POST" action="{{ url_for('hapus_loket', id=loket.id) }}" onsubmit="return confirm('Yakin ingin menghapus loket ini?');" style="display:inline;">
+                        <button type="submit">🗑️ Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">Belum ada data loket</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Antrian</title>
+  <meta http-equiv="refresh" content="5">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #000;
+      color: #fff;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      font-size: 42px;
+      margin-bottom: 40px;
+      color: #00ffcc;
+      letter-spacing: 1px;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .loket {
+      background-color: #111;
+      padding: 25px;
+      border-radius: 12px;
+      width: 250px;
+      box-shadow: 0 0 20px rgba(0, 255, 150, 0.2);
+    }
+    .kode {
+      font-size: 20px;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+    .nomor {
+      font-size: 72px;
+      font-weight: bold;
+      color: #00ff99;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Display Antrian</h1>
+  <div class="container">
+    {% for loket in loket_list %}
+      <div class="loket">
+        <div class="kode">{{ loket.nama }}</div>
+        <div class="nomor">
+          {{ loket.kode }}{{ loket.nomor if loket.nomor else ' - ' }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+</body>
+</html>

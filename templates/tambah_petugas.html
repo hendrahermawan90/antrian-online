@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>➕ Tambah Petugas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f7f9fb;
+            padding: 40px;
+            color: #2c3e50;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 480px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            background-color: #27ae60;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1e8449;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #34495e;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>➕ Tambah Petugas Baru</h2>
+
+    <form method="post">
+        <label>Username:</label>
+        <input type="text" name="username" required>
+
+        <label>Password:</label>
+        <input type="text" name="password" required>
+
+        <label>Pilih Loket:</label>
+        <select name="loket_id" required>
+            <option value="">-- Pilih Loket --</option>
+            {% for l in loket_list %}
+            <option value="{{ l.id }}">{{ l.nama }} ({{ l.kode }})</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">✅ Simpan Petugas</button>
+    </form>
+
+    <a href="{{ url_for('admin_petugas') }}">⬅️ Kembali ke Daftar Petugas</a>
+</body>
+</html>

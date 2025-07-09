@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>📊 Histori Antrian</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9f9f9;
+            margin: 30px;
+            color: #333;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        form {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        select, input[type="date"], button {
+            margin-right: 15px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #fcfcfc;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    
+    <h2>📊 Histori Antrian</h2>
+    <a href="{{ url_for('admin_dashboard') }}" class="back-link">← Kembali ke Dashboard</a>
+
+    <form method="get">
+        <label>Loket:</label>
+        <select name="loket_id">
+            <option value="all">Semua Loket</option>
+            {% for loket in loket_list %}
+                <option value="{{ loket.id }}" {% if selected_loket == loket.id|string %}selected{% endif %}>
+                    {{ loket.nama }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Status:</label>
+        <select name="status">
+            <option value="all">Semua</option>
+            <option value="menunggu" {% if selected_status == 'menunggu' %}selected{% endif %}>Menunggu</option>
+            <option value="dipanggil" {% if selected_status == 'dipanggil' %}selected{% endif %}>Dipanggil</option>
+            <option value="selesai" {% if selected_status == 'selesai' %}selected{% endif %}>Selesai</option>
+        </select>
+
+        <label>Tanggal:</label>
+        <input type="date" name="tanggal" value="{{ selected_tanggal }}">
+
+        <button type="submit">🔍 Filter</button>
+    </form>
+
+    <form method="get" action="{{ url_for('export_histori_excel') }}">
+        <input type="hidden" name="loket_id" value="{{ selected_loket or 'all' }}">
+        <input type="hidden" name="status" value="{{ selected_status or 'all' }}">
+        <input type="hidden" name="tanggal" value="{{ selected_tanggal or '' }}">
+        <button type="submit">⬇️ Export ke Excel</button>
+    </form>
+
+    <br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>HP</th>
+                <th>Loket</th>
+                <th>Nomor</th>
+                <th>Status</th>
+                <th>Waktu</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in antrian_list %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ a.nama }}</td>
+                <td>{{ a.no_hp }}</td>
+                <td>{{ a.nama_loket }} ({{ a.kode_loket }})</td>
+                <td>{{ a.nomor }}</td>
+                <td>{{ a.status }}</td>
+                <td>{{ a.waktu_masuk }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7">Belum ada data</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

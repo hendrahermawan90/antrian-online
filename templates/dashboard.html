@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard Petugas</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f4f8fc;
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    .info-box {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    .info-box div {
+      background: #fff;
+      padding: 15px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      font-size: 18px;
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px #ddd;
+    }
+    th, td {
+      padding: 14px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+    th {
+      background-color: #007BFF;
+      color: white;
+    }
+    .panggil-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .panggil-btn:hover {
+      background-color: rgb(7, 63, 116);
+    }
+    .dipanggil-btn {
+      background-color: #6c757d;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .dipanggil-btn:hover {
+      background-color: rgb(13, 90, 145);
+    }
+    .selesai-btn {
+      background-color: #dc3545;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .selesai-btn:hover {
+      background-color: rgb(34, 21, 22);
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logout {
+      text-decoration: none;
+      color: white;
+      background: #dc3545;
+      padding: 8px 14px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .logout:hover {
+      background: #c82333;
+    }
+    form {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    <h2>Dashboard Petugas - {{ session['username'] }}</h2>
+    <a href="/logout" class="logout">Logout</a>
+  </div>
+
+  <div class="info-box">
+    <div>✅ Sudah Dipanggil: <strong>{{ jumlah_dipanggil }}</strong></div>
+    <div>⏳ Belum Dipanggil: <strong>{{ jumlah_menunggu }}</strong></div>
+  </div>
+
+  <table>
+    <tr>
+      <th>Nama</th>
+      <th>No HP</th>
+      <th>No Antrian</th>
+      <th>Waktu Ambil</th>
+      <th>Aksi</th>
+    </tr>
+    {% for a in antrian %}
+    <tr>
+      <td>{{ a.nama }}</td>
+      <td>{{ a.no_hp }}</td>
+      <td><strong>{{ a.kode_loket }}{{ a.nomor }}</strong></td>
+      <td>{{ a.waktu_masuk }}</td>
+      <td>
+        {% if a.status == 'menunggu' %}
+          <form method="POST" action="{{ url_for('panggil', antrian_id=a.id) }}" onsubmit="return playSoundAndSubmit(event, '{{ a.kode_loket }}', '{{ a.nomor }}')">
+            <button type="submit" class="panggil-btn">Panggil</button>
+          </form>
+        {% elif a.status == 'dipanggil' %}
+          <button class="dipanggil-btn" onclick="playSound('{{ a.kode_loket }}', '{{ a.nomor }}')">Dipanggil</button>
+          <form method="POST" action="{{ url_for('selesai', antrian_id=a.id) }}" style="margin-left:5px;">
+            <button type="submit" class="selesai-btn">Selesai</button>
+          </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <script>
+    function kodeKeAngka(kode) {
+      const map = {
+        'A': 'satu',
+        'B': 'dua',
+        'C': 'tiga',
+        'D': 'empat',
+        'E': 'lima'
+      };
+      return map[kode.toUpperCase()] || kode;
+    }
+
+    function playSound(kodeLoket, nomor) {
+      const angkaLoket = kodeKeAngka(kodeLoket);
+      const teks = `Nomor antrian ${kodeLoket},${nomor}, silakan ke loket ${angkaLoket}`;
+      const suara = new SpeechSynthesisUtterance(teks);
+      suara.lang = 'id-ID';
+      speechSynthesis.speak(suara);
+    }
+
+    function playSoundAndSubmit(event, kodeLoket, nomor) {
+      event.preventDefault();
+      playSound(kodeLoket, nomor);
+      setTimeout(() => {
+        event.target.submit();
+      }, 3000); // jeda 3 detik sebelum submit
+      return false;
+    }
+  </script>
+
+</body>
+</html>

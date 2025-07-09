@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>➕ Tambah Loket Baru</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 40px;
+            color: #2c3e50;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 480px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+        label {
+            font-weight: 600;
+            margin-top: 15px;
+            display: block;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #34495e;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>➕ Tambah Loket Baru</h1>
+    <form method="POST">
+        <label>Nama Loket:</label>
+        <input type="text" name="nama" required>
+
+        <label>Kode Loket:</label>
+        <input type="text" name="kode" required>
+
+        <label>Kuota Harian:</label>
+        <input type="number" name="kuota" min="1" required>
+
+        <button type="submit">✅ Simpan Loket</button>
+    </form>
+
+    <a href="{{ url_for('admin_loket') }}">⬅️ Kembali ke Daftar Loket</a>
+</body>
+</html>

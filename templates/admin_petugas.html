@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>👤 Manajemen Petugas</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f9fafb;
+            margin: 30px;
+            color: #333;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .tambah-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background-color: #2ecc71;
+            color: white;
+            border-radius: 6px;
+        }
+        .tambah-button:hover {
+            background-color: #27ae60;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        td form {
+            display: inline;
+        }
+        button {
+            padding: 6px 12px;
+            border: none;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c0392b;
+        }
+        .edit-link {
+            margin-right: 10px;
+            color: #f39c12;
+        }
+        .edit-link:hover {
+            text-decoration: underline;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            color: #3498db;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>👤 Manajemen Petugas</h2>
+    <a href="{{ url_for('admin_dashboard') }}" class="back-link">⬅️ Kembali ke Dashboard</a>
+    <h1></h1>
+    <a href="{{ url_for('tambah_petugas') }}" class="tambah-button">➕ Tambah Petugas</a>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Loket</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in petugas %}
+            <tr>
+                <td>{{ p.username }}</td>
+                <td>{{ p.nama_loket or '-' }}</td>
+                <td>
+                    <a href="{{ url_for('edit_petugas', id=p.id) }}" class="edit-link">✏️ Edit</a>
+                    <form action="{{ url_for('hapus_petugas', id=p.id) }}" method="post" style="display:inline;" onsubmit="return confirm('Yakin hapus petugas ini?')">
+                        <button type="submit">🗑️ Hapus</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">Belum ada petugas</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+</body>
+</html>
