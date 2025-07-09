@@ -116,7 +116,7 @@ Sistem ini dibangun dengan arsitektur **client-server** yang mendukung prinsip d
 ---
 
 ## 📄 Lisensi
-
+** HENDRA hERMAWAN **
 Proyek ini bersifat open-source dan bebas digunakan untuk tujuan pembelajaran, penelitian, atau pengembangan lebih lanjut.
 
 ---
