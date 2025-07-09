@@ -62,7 +62,7 @@ Aplikasi ini merupakan sistem antrian online berbasis web yang dirancang untuk m
    ```bash
    git clone https://github.com/username/nama-repo-antrian.git
    cd nama-repo-antrian
-````
+   ````
 
 2. **Install dependency**
 
